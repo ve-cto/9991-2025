@@ -48,26 +48,31 @@ public:
   void AutonomousInit() override;
   void AutonomousPeriodic() override;
     
-  
+  // define autos for smartdashboard
   frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameDefault = "Centre Automonous";
-  const std::string kAutoNameCustom1 = "Left-Sided Automonous";
-  const std::string kAutoNameCustom2 = "Shoot and Drive Out";
-  const std::string kAutoNameCustom3 = "Do Nothing";
+  const std::string kAutoNameDefault = "Default Auto";
+  const std::string kAutoNameCustom1 = "Auto 1";
+  const std::string kAutoNameCustom2 = "Auto 2";
+  const std::string kAutoNameCustom3 = "Auto 3";
   std::string m_autoSelected;
 
 private:
   // Create class for xBox Controllers 1 and 2
   std::unique_ptr<frc::XboxController> xboxController1;
   std::unique_ptr<frc::XboxController> xboxController2;
+// define m_driverControllerX with the XBox Controllers
+  frc::XboxController m_driverController1 {0};
+  frc::XboxController m_driverController2 {1};
 
-  std::unique_ptr<WPI_VictorSPX> m_intake; // Motor with CAN ID 8
-  std::unique_ptr<WPI_VictorSPX> m_shoot;  // Motor with CAN ID 3
-  std::unique_ptr<WPI_VictorSPX> m_load;   // Motor with CAN ID 1
-  std::unique_ptr<WPI_VictorSPX> m_lift;   // Motor with CAN ID 2
-  std::unique_ptr<frc::DigitalInput> limitSwitch; // I/O 0
-  std::unique_ptr<frc::DigitalInput> liftLimitSwitch;
-   
+  // define control scheme for motors in Robot.cpp
+  std::unique_ptr<WPI_VictorSPX> m_can1;
+  std::unique_ptr<WPI_VictorSPX> m_can2;
+  std::unique_ptr<WPI_VictorSPX> m_can3;
+  std::unique_ptr<WPI_VictorSPX> m_can8;
+
+  // std::unique_ptr<frc::DigitalInput> limitSwitch; // I/O 0
+
+  // define motor controllers responsible for driving
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX frontLeftMotor {7};
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX rearLeftMotor {6};
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX frontRightMotor {5};
@@ -77,34 +82,17 @@ private:
   frc::MotorControllerGroup m_rightMotor {frontRightMotor, rearRightMotor};
   frc::MotorControllerGroup m_leftMotor {frontLeftMotor, rearLeftMotor};
   frc::DifferentialDrive m_robotDrive {m_leftMotor, m_rightMotor};
-  
+
+
   // Initialise frc::Timer as timer
   frc::Timer timer;
+
 
   // Define speed multipliers
   double slow = 0.55;
   double fast = 0.9;
   double reg = 0.75;
   double speed = 0.65;
-
-  float m_intakeVar = 0.0;
-  float m_shootVar = 0.0;
-  float m_loadVar = 0.0;
-  float m_liftVar = 0.0;
-
-  bool limitSwitchVal = false;
-
-  
-
-  // define m_driverControllerX with the XBox Controllers
-  frc::XboxController m_driverController1 {0};
-  frc::XboxController m_driverController2 {1};
-
-
-
-  // What is this even for?
-  bool motor2Running = false; // Track if m_shoot is running
-
 
   //public:
   //void RobotInit() override;
